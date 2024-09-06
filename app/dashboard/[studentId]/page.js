@@ -133,7 +133,10 @@ const Dashboard = ({ params }) => {
                 <p className="text-sm text-gray-600">{enrollment.course.instructor}</p>
                 <p>Progress: {enrollment.progress}%</p>
                 <button
-                  onClick={() => markAsCompleted(enrollment.id)}
+                  onClick={() => {
+                    e.stopPropagation();
+                    markAsCompleted(enrollment.id)
+                  }}
                   className={`mt-4 px-4 py-2 rounded-md ${enrollment.completed ? 'bg-green-500' : 'bg-blue-500'} text-white`}
                   disabled={enrollment.completed}
                 >
