@@ -11,6 +11,7 @@ const CourseDetails = ({ params }) => {
     const id = params.id; // Get the dynamic route parameter (course ID)
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [expandedWeek, setExpandedWeek] = useState(null); // State to manage expanded week
 
     useEffect(() => {
         if (id) {
@@ -28,6 +29,10 @@ const CourseDetails = ({ params }) => {
             setCourse(data);
         }
         setLoading(false);
+    };
+
+    const toggleWeek = (weekIndex) => {
+        setExpandedWeek(expandedWeek === weekIndex ? null : weekIndex); // Toggle expanded state
     };
 
     if (loading) return <p className='flex justify-center items-center w-full h-screen text-[24px]'>Loading course details...</p>;
@@ -55,8 +60,18 @@ const CourseDetails = ({ params }) => {
                         <h2 className="text-2xl font-semibold mt-6">Syllabus</h2>
                         <ul className="list-disc ml-6">
                             {course.syllabus.map((week, index) => (
-                                <li key={index}>
-                                    <strong>Week {week.week}:</strong> {week.topic} - {week.content}
+                                <li key={index} className="mb-2">
+                                    <button
+                                        onClick={() => toggleWeek(index)}
+                                        className="text-lg font-semibold text-blue-600 hover:underline"
+                                    >
+                                        Week {week.week}: {week.topic}
+                                    </button>
+                                    {expandedWeek === index && (
+                                        <div className="ml-4 mt-2">
+                                            <p>{week.content}</p>
+                                        </div>
+                                    )}
                                 </li>
                             ))}
                         </ul>
